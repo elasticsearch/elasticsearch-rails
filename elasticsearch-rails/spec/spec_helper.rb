@@ -20,6 +20,7 @@ require 'active_record'
 require 'elasticsearch/model'
 require 'elasticsearch/rails'
 require 'rails/railtie'
+require 'rails/version'
 require 'elasticsearch/rails/instrumentation'
 
 
