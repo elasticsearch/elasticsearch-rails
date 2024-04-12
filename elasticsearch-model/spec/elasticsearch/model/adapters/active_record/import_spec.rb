@@ -52,6 +52,10 @@ describe 'Elasticsearch::Model::Adapter::ActiveRecord Importing' do
       it 'imports all documents' do
         expect(ImportArticle.search('*').results.total).to eq(10)
       end
+
+      it "does not pollute the model's namespace" do
+        expect(ImportArticle.methods).not_to include(:__transform)
+      end
     end
 
     context 'when batch size is specified' do
