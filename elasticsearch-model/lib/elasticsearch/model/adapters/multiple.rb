@@ -105,17 +105,15 @@ module Elasticsearch
           # @api private
           #
           def __type_for_hit(hit)
-            @@__types ||= {}
 
-            key = "#{hit[:_index]}::#{hit[:_type]}" if hit[:_type] && hit[:_type] != '_doc'
-            key = hit[:_index] unless key
-
-            @@__types[key] ||= begin
-              Registry.all.detect do |model|
-                (model.index_name == hit[:_index] && __no_type?(hit)) ||
-                    (model.index_name == hit[:_index] && model.document_type == hit[:_type])
-              end
+            key = if hit[:_type] && hit[:_type] != '_doc'
+              "#{hit[:_index]}::#{hit[:_type]}"
+            else
+              hit[:_index]
             end
+
+            # DVB -- #838, refactor the lookup of index name to model into the Registry
+            Registry.lookup(key, hit[:_type])
           end
 
           def __no_type?(hit)

@@ -18,10 +18,11 @@
 module Elasticsearch
   module Model
     # Keeps a global registry of classes that include `Elasticsearch::Model`
-    #
+    # Keeps a global registry of index to class mappings
     class Registry
       def initialize
         @models = []
+        @indexes = {}
       end
 
       # Returns the unique instance of the registry (Singleton)
@@ -44,10 +45,29 @@ module Elasticsearch
         __instance.models
       end
 
+      def self.indexes
+        __instance.indexes
+      end
+
+      def self.add_index(index, model)
+        __instance.add_index(index, model)
+      end
+
       # Adds a model to the registry
       #
       def add(klass)
-        @models << klass
+        # Detect already loaded models and ensure that a duplicate is not stored
+        if i = @models.index{ |_class| _class.name == klass.name }
+          @models[i] = klass
+          # clear the cached index map (autoloading in development causes this)
+          @indexes.clear
+        else
+          @models << klass
+        end
+      end
+
+      def add_index(index, model)
+        @indexes[index] = model
       end
 
       # Returns a copy of the registered models
@@ -55,6 +75,34 @@ module Elasticsearch
       def models
         @models.dup
       end
+
+      def indexes
+        @indexes.dup
+      end
+
+      ##
+      # Find the model matching the given index and document type from a search hit
+      # Cache the index->model mapping for performance
+      # Clear the index cache when models are reloaded
+      def self.lookup(index, type=nil)
+        if Registry.indexes.has_key?(index)
+          # Cache hit
+          Registry.indexes[index]
+        else
+          # Cache bust
+          model = if type.nil? or type == "_doc"
+            # lookup strictly by index for generic document types
+            Registry.all.detect{|m| m.index_name == index}
+          else
+            # lookup using index and type
+            Registry.all.detect{|m| m.index_name == index and model.document_type == type}
+          end
+          # cache the index to model mapping
+          Registry.add_index(index, model)
+          model
+        end
+      end
+
     end
 
     # Wraps a collection of models when querying multiple indices
