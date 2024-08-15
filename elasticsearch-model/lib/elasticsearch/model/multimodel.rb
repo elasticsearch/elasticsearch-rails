@@ -41,7 +41,7 @@ module Elasticsearch
       # Returns an Array of registered models
       #
       def self.all
-        __instance.models
+        __instance.models.sort_by(&:name)
       end
 
       # Adds a model to the registry
