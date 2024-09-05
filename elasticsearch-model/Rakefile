@@ -52,6 +52,7 @@ namespace :test do
     puts '-' * 80
     gemfiles.each do |gemfile|
       puts "GEMFILE: #{gemfile}"
+      sh "BUNDLE_GEMFILE='#{File.expand_path("../gemfiles/#{gemfile}", __FILE__)}' bundle install"
       sh "BUNDLE_GEMFILE='#{File.expand_path("../gemfiles/#{gemfile}", __FILE__)}' " \
              ' bundle exec rspec'
       puts '-' * 80
