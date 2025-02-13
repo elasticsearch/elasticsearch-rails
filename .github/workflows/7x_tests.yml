@@ -13,11 +13,11 @@ jobs:
   tests:
     env:
       TEST_ES_SERVER: http://localhost:9200
-      RAILS_VERSIONS: '5.0,6.0'
+      RAILS_VERSIONS: '6.0,7.0'
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.6', '2.7', '3.0']
+        ruby: ['2.7', '3.0']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

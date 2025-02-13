@@ -54,4 +54,4 @@ describe Elasticsearch::Rails::Instrumentation::LogSubscriber do
       end
     end
   end
-end
+end if version >= Gem::Version.new('7.1')

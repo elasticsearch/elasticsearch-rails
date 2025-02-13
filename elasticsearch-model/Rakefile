@@ -21,8 +21,7 @@ desc 'Run unit tests'
 task default: 'test:all'
 task test:    'test:all'
 
-gemfiles = ['5.0.gemfile', '6.0.gemfile']
-gemfiles << '4.0.gemfile' if RUBY_VERSION < '2.7'
+gemfiles = ['6.0.gemfile', '7.0.gemfile']
 GEMFILES = gemfiles.freeze
 
 namespace :bundle do
