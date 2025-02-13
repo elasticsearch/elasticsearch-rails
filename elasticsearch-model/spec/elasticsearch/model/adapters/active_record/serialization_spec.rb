@@ -52,9 +52,10 @@ describe 'Elasticsearch::Model::Adapter::ActiveRecord Serialization' do
     end
 
     context 'when a document is updated' do
-
       before do
-        article.update_attributes(title: 'UPDATED', status: 'yellow')
+        article.update_attribute(:title, 'UPDATED')
+        article.update_attribute(:status, 'yellow')
+
         ArticleWithCustomSerialization.__elasticsearch__.refresh_index!
       end
 
