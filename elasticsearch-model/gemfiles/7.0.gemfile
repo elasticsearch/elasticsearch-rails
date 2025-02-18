@@ -17,19 +17,18 @@
 
 # Usage:
 #
-# $ BUNDLE_GEMFILE=./gemfiles/5.0.gemfile bundle install
-# $ BUNDLE_GEMFILE=./gemfiles/5.0.gemfile bundle exec rake test:integration
+# $ BUNDLE_GEMFILE=./gemfiles/6.0.gemfile bundle install
+# $ BUNDLE_GEMFILE=./gemfiles/6.0.gemfile bundle exec rake test:integration
 
 source 'https://rubygems.org'
 
 gemspec path: '../'
 
-gem 'activemodel',  '~> 5'
-gem 'activerecord', '~> 5'
-gem 'sqlite3' unless defined?(JRUBY_VERSION)
-gem 'mongoid', '~> 6'
+gem 'activemodel',  '7.0'
+gem 'activerecord', '7.0'
+gem 'activesupport', '7.0'
 
 group :development, :testing do
-  gem 'rspec'
   gem 'pry-nav'
+  gem 'rspec'
 end

@@ -46,8 +46,19 @@ module Elasticsearch
           payload = event.payload
           name    = "#{payload[:klass]} #{payload[:name]} (#{event.duration.round(1)}ms)"
           search  = payload[:search].inspect.gsub(/:(\w+)=>/, '\1: ')
+          debug %Q|  #{color(name, GREEN, color_option(true))} #{colorize_logging ? "\e[2m#{search}\e[0m" : search}|
+        end
 
-          debug %Q|  #{color(name, GREEN, true)} #{colorize_logging ? "\e[2m#{search}\e[0m" : search}|
+        private
+
+        def color_option(bold_value)
+          new_color_syntax? ? { bold: bold_value } : bold_value
+        end
+
+        def new_color_syntax?
+          return @new_color_syntax if defined?(@new_color_syntax)
+
+          @new_color_syntax = ::Rails.respond_to?(:gem_version) && ::Rails.gem_version >= Gem::Version.new('7.1')
         end
       end
 

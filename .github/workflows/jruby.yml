@@ -2,10 +2,10 @@ name: JRuby
 on:
   push:
     branches:
-      - main
+      - 7.x
   pull_request:
     branches:
-      - main
+      - 7.x
   workflow_dispatch:
     branches:
       - '*'
@@ -16,6 +16,8 @@ jobs:
       RAILS_VERSIONS: '5.0,6.0'
     strategy:
       fail-fast: false
+      matrix:
+        ruby: [ 'jruby-9.3', 'jruby-9.4' ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -27,13 +29,12 @@ jobs:
         sudo sysctl -w vm.max_map_count=262144
     - uses: elastic/elastic-github-actions/elasticsearch@master
       with:
-        stack-version: 7.x-SNAPSHOT
+        stack-version: 7.17-SNAPSHOT
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: jruby-9.3
+        ruby-version: ${{ matrix.ruby }}
     - name: Bundle
       run: |
-        sudo apt-get install libsqlite3-dev
         gem install bundler
         bundle install
         bundle exec rake bundle:clean

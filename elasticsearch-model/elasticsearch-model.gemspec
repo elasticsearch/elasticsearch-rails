@@ -63,6 +63,5 @@ Gem::Specification.new do |s|
   unless defined?(JRUBY_VERSION)
     s.add_development_dependency 'oj'
     s.add_development_dependency 'ruby-prof'
-    s.add_development_dependency 'sqlite3'
   end
 end

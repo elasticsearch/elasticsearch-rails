@@ -114,6 +114,11 @@ module Elasticsearch
           METHODS.each do |method|
             delegate method, to: :__elasticsearch__ unless self.public_instance_methods.include?(method)
           end
+
+          def inherited(subclass)
+            super
+            Registry.add(subclass) if subclass.is_a?(Class)
+          end
         end
       end
 

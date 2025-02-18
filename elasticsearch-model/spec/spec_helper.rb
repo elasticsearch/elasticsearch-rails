@@ -31,6 +31,10 @@ end
 require 'yaml'
 require 'active_record'
 
+# Load all of ActiveSupport to be sure of complete compatibility -
+# see https://github.com/elastic/elasticsearch-rails/pull/1075 for details
+require 'active_support/all'
+
 unless defined?(ELASTICSEARCH_URL)
   ELASTICSEARCH_URL = ENV['ELASTICSEARCH_URL'] || "localhost:#{(ENV['TEST_CLUSTER_PORT'] || 9200)}"
 end
