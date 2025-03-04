@@ -80,4 +80,11 @@ describe Elasticsearch::Model::Response::Aggregations do
       expect(aggregations.price.max.value).to eq(99)
     end
   end
+
+  describe '#dup' do
+
+    it 'creates a copy of the aggregation' do
+      expect(aggregations.dup).to eq(aggregations)
+    end
+  end
 end

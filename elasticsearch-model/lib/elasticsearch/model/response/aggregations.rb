@@ -22,7 +22,7 @@ module Elasticsearch
       class Aggregations < HashWrapper
         disable_warnings if respond_to?(:disable_warnings)
 
-        def initialize(attributes={})
+        def initialize(attributes={}, options= {})
           __redefine_enumerable_methods super(attributes)
         end
 
